@@ -67,6 +67,8 @@ async def telemetry_websocket(websocket: WebSocket):
             "coverage_percentage": simulation.coverage_percentage,
             "active_handover": simulation.active_handover,
             "tick": simulation.tick,
+            "simulated_mission_time": simulation.simulated_mission_time,
+            "timestamp": __import__('datetime').datetime.utcnow().isoformat() + "Z",
         }
         await websocket.send_text(json.dumps(initial))
 

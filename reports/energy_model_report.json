@@ -1,0 +1,32 @@
+{
+  "model": "energy_endurance_v1",
+  "data": "SYNTHETIC/SIMULATION-BASED",
+  "algorithm": "XGBoost",
+  "validation_results": [
+    {
+      "model": "Linear Regression",
+      "MAE": 6.5264,
+      "RMSE": 9.651,
+      "R2": 0.7939
+    },
+    {
+      "model": "Random Forest",
+      "MAE": 1.3804,
+      "RMSE": 2.1309,
+      "R2": 0.99
+    },
+    {
+      "model": "XGBoost",
+      "MAE": 0.854,
+      "RMSE": 1.2899,
+      "R2": 0.9963
+    }
+  ],
+  "test_results": {
+    "model": "XGBoost (TEST)",
+    "MAE": 0.8716,
+    "RMSE": 1.3392,
+    "R2": 0.9961
+  },
+  "training_date": "2026-08-17T17:03:21.149161Z"
+}

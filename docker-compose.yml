@@ -10,8 +10,26 @@ services:
     environment:
       - DATABASE_URL=sqlite+aiosqlite:///./persist_air.db
       - ENVIRONMENT=production
-      - CORS_ORIGINS=http://localhost,http://localhost:5173
+      - CORS_ORIGINS=http://localhost,http://localhost:5173,http://localhost:80
       - ML_SERVICE_URL=http://ml-service:8001
+      - SECRET_KEY=${SECRET_KEY:-persist-air-change-this-in-production}
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./models:/app/models:ro
+    restart: always
+    depends_on:
+      - ml-service
+
+  ml-service:
+    build:
+      context: ./ml_service
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./models:/app/models:ro
     restart: always
 
   frontend:

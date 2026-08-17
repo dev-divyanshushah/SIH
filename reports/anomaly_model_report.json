@@ -1,0 +1,22 @@
+{
+  "model": "anomaly_detection_v1",
+  "data": "SYNTHETIC/SIMULATION-BASED",
+  "primary_algorithm": "IsolationForest (unsupervised)",
+  "comparison_algorithm": "RandomForest (supervised)",
+  "isolation_forest_results": {
+    "f1": 0.7306,
+    "precision": 0.5755,
+    "recall": 1.0,
+    "roc_auc": 0.9916
+  },
+  "random_forest_results": {
+    "f1": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "roc_auc": 1.0
+  },
+  "false_positive_rate": {
+    "isolation_forest": 0.2458
+  },
+  "training_date": "2026-08-17T17:03:28.249365Z"
+}

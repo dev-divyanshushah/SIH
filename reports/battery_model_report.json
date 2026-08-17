@@ -1,0 +1,25 @@
+{
+  "model": "battery_health_v1",
+  "data": "SYNTHETIC",
+  "results": [
+    {
+      "model": "Linear Regression",
+      "MAE": 0.0,
+      "RMSE": 0.0,
+      "R2": 1.0
+    },
+    {
+      "model": "Random Forest",
+      "MAE": 0.0064,
+      "RMSE": 0.0135,
+      "R2": 1.0
+    }
+  ],
+  "test": {
+    "model": "Linear Regression (TEST)",
+    "MAE": 0.0,
+    "RMSE": 0.0,
+    "R2": 1.0
+  },
+  "training_date": "2026-08-17T17:03:31.079408Z"
+}
