@@ -11,6 +11,7 @@ interface AppState {
   events: IntelEvent[];
   missions: Mission[];
   coveragePercentage: number;
+  coverageMetrics: { overall: number; redundant: number; single: number; gaps: number; status: string };
   activeHandover: ActiveHandover | null;
   tick: number;
 
@@ -32,6 +33,7 @@ interface AppState {
   setEvents: (events: IntelEvent[]) => void;
   setMissions: (missions: Mission[]) => void;
   setCoverage: (pct: number) => void;
+  setCoverageMetrics: (m: { overall: number; redundant: number; single: number; gaps: number; status: string }) => void;
   setActiveHandover: (h: ActiveHandover | null) => void;
   setTick: (t: number) => void;
   setSelectedDrone: (id: string | null) => void;
@@ -55,6 +57,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   events: [],
   missions: [],
   coveragePercentage: 97.8,
+  coverageMetrics: { overall: 97.8, redundant: 70.0, single: 27.8, gaps: 0, status: "STABLE" },
   activeHandover: null,
   tick: 0,
 
@@ -73,6 +76,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   setEvents: (events) => set({ events }),
   setMissions: (missions) => set({ missions }),
   setCoverage: (coveragePercentage) => set({ coveragePercentage }),
+  setCoverageMetrics: (coverageMetrics) => set({ coverageMetrics }),
   setActiveHandover: (activeHandover) => set({ activeHandover }),
   setTick: (tick) => set({ tick }),
   setSelectedDrone: (selectedDroneId) => set({ selectedDroneId }),

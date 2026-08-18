@@ -20,93 +20,89 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 from dataclasses import dataclass, field
 
-# ─── Base location: New Delhi, India ────────────────────────────────────────
-BASE_LAT = 28.6139
-BASE_LON = 77.2090
+# ─── Base location: India-Pakistan Border Region ────────────────────────────────
+BASE_LAT = 29.5000
+BASE_LON = 73.5000
 
 DRONE_CONFIGS = [
     {
         "id": "PA-01",
-        "name": "PERSIST ALPHA-01",
-        "home_lat": BASE_LAT + 0.002,
-        "home_lon": BASE_LON - 0.003,
+        "name": "PERSIST ALPHA-01 (CENTRAL)",
+        "home_lat": BASE_LAT,
+        "home_lon": BASE_LON,
         "start_battery": 94.0,
         "route": [
-            (BASE_LAT + 0.010, BASE_LON - 0.008),
-            (BASE_LAT + 0.015, BASE_LON + 0.002),
-            (BASE_LAT + 0.008, BASE_LON + 0.012),
-            (BASE_LAT + 0.002, BASE_LON + 0.005),
+            (BASE_LAT + 0.003, BASE_LON - 0.003),
+            (BASE_LAT + 0.003, BASE_LON + 0.003),
+            (BASE_LAT - 0.003, BASE_LON + 0.003),
+            (BASE_LAT - 0.003, BASE_LON - 0.003),
         ],
         "status": "active",
     },
     {
         "id": "PA-02",
-        "name": "PERSIST ALPHA-02",
-        "home_lat": BASE_LAT - 0.002,
-        "home_lon": BASE_LON + 0.003,
-        "start_battery": 29.0,
+        "name": "PERSIST ALPHA-02 (NORTH)",
+        "home_lat": BASE_LAT + 0.012,
+        "home_lon": BASE_LON,
+        "start_battery": 89.0,
         "route": [
-            (BASE_LAT - 0.008, BASE_LON + 0.010),
-            (BASE_LAT - 0.014, BASE_LON + 0.005),
-            (BASE_LAT - 0.010, BASE_LON - 0.005),
-            (BASE_LAT - 0.004, BASE_LON - 0.008),
+            (BASE_LAT + 0.015, BASE_LON - 0.003),
+            (BASE_LAT + 0.015, BASE_LON + 0.003),
+            (BASE_LAT + 0.009, BASE_LON + 0.003),
+            (BASE_LAT + 0.009, BASE_LON - 0.003),
         ],
         "status": "active",
     },
     {
         "id": "PA-03",
-        "name": "PERSIST ALPHA-03",
-        "home_lat": BASE_LAT + 0.001,
-        "home_lon": BASE_LON + 0.004,
-        "start_battery": 100.0,
-        "route": [],
-        "status": "charging",
+        "name": "PERSIST ALPHA-03 (EAST)",
+        "home_lat": BASE_LAT,
+        "home_lon": BASE_LON + 0.012,
+        "start_battery": 82.0,
+        "route": [
+            (BASE_LAT + 0.003, BASE_LON + 0.015),
+            (BASE_LAT - 0.003, BASE_LON + 0.015),
+            (BASE_LAT - 0.003, BASE_LON + 0.009),
+            (BASE_LAT + 0.003, BASE_LON + 0.009),
+        ],
+        "status": "active",
     },
     {
         "id": "PA-04",
-        "name": "PERSIST ALPHA-04",
-        "home_lat": BASE_LAT - 0.001,
-        "home_lon": BASE_LON - 0.004,
+        "name": "PERSIST ALPHA-04 (WEST)",
+        "home_lat": BASE_LAT,
+        "home_lon": BASE_LON - 0.012,
         "start_battery": 87.0,
         "route": [
-            (BASE_LAT + 0.005, BASE_LON - 0.015),
-            (BASE_LAT + 0.012, BASE_LON - 0.010),
-            (BASE_LAT + 0.018, BASE_LON - 0.002),
-            (BASE_LAT + 0.010, BASE_LON + 0.008),
+            (BASE_LAT + 0.003, BASE_LON - 0.009),
+            (BASE_LAT - 0.003, BASE_LON - 0.009),
+            (BASE_LAT - 0.003, BASE_LON - 0.015),
+            (BASE_LAT + 0.003, BASE_LON - 0.015),
         ],
         "status": "active",
     },
     {
         "id": "PA-05",
-        "name": "PERSIST ALPHA-05",
-        "home_lat": BASE_LAT + 0.003,
-        "home_lon": BASE_LON + 0.001,
+        "name": "PERSIST ALPHA-05 (SOUTH)",
+        "home_lat": BASE_LAT - 0.012,
+        "home_lon": BASE_LON,
         "start_battery": 68.0,
         "route": [
-            (BASE_LAT - 0.012, BASE_LON - 0.012),
-            (BASE_LAT - 0.018, BASE_LON - 0.005),
-            (BASE_LAT - 0.015, BASE_LON + 0.008),
+            (BASE_LAT - 0.009, BASE_LON - 0.003),
+            (BASE_LAT - 0.009, BASE_LON + 0.003),
+            (BASE_LAT - 0.015, BASE_LON + 0.003),
+            (BASE_LAT - 0.015, BASE_LON - 0.003),
         ],
         "status": "active",
-    },
-    {
-        "id": "PA-06",
-        "name": "PERSIST ALPHA-06",
-        "home_lat": BASE_LAT - 0.003,
-        "home_lon": BASE_LON - 0.001,
-        "start_battery": 100.0,
-        "route": [],
-        "status": "available",
     },
 ]
 
 SECTOR_MAP = {
-    "A1": (BASE_LAT + 0.010, BASE_LON - 0.008),
-    "A2": (BASE_LAT + 0.015, BASE_LON + 0.002),
-    "B3": (BASE_LAT - 0.008, BASE_LON + 0.010),
-    "B4": (BASE_LAT - 0.014, BASE_LON + 0.005),
-    "C1": (BASE_LAT + 0.005, BASE_LON - 0.015),
-    "C2": (BASE_LAT + 0.012, BASE_LON - 0.010),
+    "CENTRAL": (BASE_LAT, BASE_LON),
+    "NORTH": (BASE_LAT + 0.012, BASE_LON),
+    "EAST": (BASE_LAT, BASE_LON + 0.012),
+    "WEST": (BASE_LAT, BASE_LON - 0.012),
+    "SOUTH": (BASE_LAT - 0.012, BASE_LON),
 }
 
 # Coverage radius for each drone in degrees (~1.2km / 0.011 degrees)
@@ -280,6 +276,7 @@ class SimulationEngine:
         self.events: List[SimEvent] = []
         self.missions: List[dict] = []
         self.coverage_percentage = 97.8
+        self.coverage_metrics = {"overall": 97.8, "redundant": 70.0, "single": 27.8, "gaps": 0, "status": "STABLE"}
         self.active_handover: Optional[dict] = None
         self.handover_cooldown = 0       # ticks until next handover check
         self.operational_mode = "security"
@@ -580,7 +577,7 @@ class SimulationEngine:
 
     # ─── Dynamic Coverage ────────────────────────────────────────────────────
 
-    def _calculate_coverage(self) -> float:
+    def _calculate_coverage(self) -> dict:
         """
         Dynamically compute coverage percentage.
         Each active airborne drone covers a circle of COVERAGE_RADIUS_DEG.
@@ -591,35 +588,60 @@ class SimulationEngine:
             if d.status in ("active", "investigating", "patrolling")
         ]
         if not active_drones:
-            return 0.0
+            return {"overall": 0.0, "redundant": 0.0, "single": 0.0, "gaps": 100, "status": "BROKEN"}
 
         # Patrol area bounds
-        lat_min = BASE_LAT - 0.025
-        lat_max = BASE_LAT + 0.025
-        lon_min = BASE_LON - 0.025
-        lon_max = BASE_LON + 0.025
+        lat_min = BASE_LAT - 0.015
+        lat_max = BASE_LAT + 0.015
+        lon_min = BASE_LON - 0.015
+        lon_max = BASE_LON + 0.015
 
-        grid_steps = 20  # 20x20 grid = 400 points
-        covered = 0
+        grid_steps = 25  # 25x25 grid = 625 points
         total = 0
+        single_cov = 0
+        redundant_cov = 0
+        
         for i in range(grid_steps):
             for j in range(grid_steps):
                 pt_lat = lat_min + (lat_max - lat_min) * i / grid_steps
                 pt_lon = lon_min + (lon_max - lon_min) * j / grid_steps
                 total += 1
+                
+                covering_count = 0
                 for drone in active_drones:
                     dlat = drone.lat - pt_lat
                     dlon = drone.lon - pt_lon
                     if math.sqrt(dlat**2 + dlon**2) <= COVERAGE_RADIUS_DEG:
-                        covered += 1
-                        break  # one drone covering this point is enough
+                        covering_count += 1
+                
+                if covering_count == 1:
+                    single_cov += 1
+                elif covering_count > 1:
+                    redundant_cov += 1
 
         if total == 0:
-            return 0.0
-        raw = (covered / total) * 100.0
-        # Apply a small realistic fluctuation
+            return {"overall": 0.0, "redundant": 0.0, "single": 0.0, "gaps": 0, "status": "BROKEN"}
+
         noise = math.sin(self.tick / 30) * 0.3
-        return round(max(0.0, min(100.0, raw + noise)), 2)
+        
+        single_pct = max(0.0, (single_cov / total) * 100.0 + noise/2)
+        redundant_pct = max(0.0, (redundant_cov / total) * 100.0 + noise/2)
+        overall_pct = min(100.0, single_pct + redundant_pct)
+        
+        if len(active_drones) == 5 and overall_pct > 90:
+            status = "STABLE"
+        elif len(active_drones) >= 3 and overall_pct > 50:
+            status = "DEGRADED"
+        else:
+            status = "BROKEN"
+
+        return {
+            "overall": round(overall_pct, 2),
+            "redundant": round(redundant_pct, 2),
+            "single": round(single_pct, 2),
+            "gaps": total - (single_cov + redundant_cov),
+            "status": status
+        }
 
     def get_coverage_zones(self) -> List[dict]:
         """Return per-drone coverage zone info for the map."""
@@ -1220,7 +1242,9 @@ class SimulationEngine:
                     self._update_history(drone)
 
             # Dynamic coverage
-            self.coverage_percentage = self._calculate_coverage()
+            if self.tick % max(1, 10 // self.speed_multiplier) == 0:
+                self.coverage_metrics = self._calculate_coverage()
+                self.coverage_percentage = self.coverage_metrics["overall"]
 
             # Handover check
             self._check_handover()
@@ -1239,6 +1263,7 @@ class SimulationEngine:
                 "anomalies": [a.to_dict() for a in self.anomalies[-20:]],
                 "events": [e.to_dict() for e in self.events[-50:]],
                 "coverage_percentage": round(self.coverage_percentage, 2),
+                "coverage_metrics": self.coverage_metrics,
                 "active_handover": self.active_handover,
                 "tick": self.tick,
                 "simulated_mission_time": self.simulated_mission_time,

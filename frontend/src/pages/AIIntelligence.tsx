@@ -7,11 +7,13 @@ import clsx from 'clsx';
 
 export function AIIntelligence() {
   const { anomalies } = useAppStore();
-  const [selectedAnomaly, setSelectedAnomaly] = useState<Anomaly | null>(null);
+  const [selectedAnomalyId, setSelectedAnomalyId] = useState<string | null>(null);
 
   const activeAnomalies = anomalies.filter(a => a.status === 'detected');
   const verifiedAnomalies = anomalies.filter(a => a.status === 'verified');
   const dismissedAnomalies = anomalies.filter(a => a.status === 'dismissed');
+
+  const selectedAnomaly = anomalies.find(a => a.id === selectedAnomalyId) || null;
 
   return (
     <div className="flex h-full w-full overflow-hidden bg-[#080c14] p-6 gap-6">
@@ -33,7 +35,7 @@ export function AIIntelligence() {
           {anomalies.length === 0 ? (
             <div className="p-8 text-center text-slate-600 text-sm">No AI detections logged yet.</div>
           ) : (
-            anomalies.map((item) => {
+            [...anomalies].sort((a, b) => b.risk_score - a.risk_score).map((item) => {
               const riskColor =
                 item.risk_level === 'critical' ? 'border-red-500/50 bg-red-500/5'
                 : item.risk_level === 'high' ? 'border-orange-500/50 bg-orange-500/5'
@@ -42,7 +44,7 @@ export function AIIntelligence() {
               return (
                 <div
                   key={item.id}
-                  onClick={() => setSelectedAnomaly(item)}
+                  onClick={() => setSelectedAnomalyId(item.id)}
                   className={clsx(
                     'bg-[#0d1421] border rounded p-4 flex justify-between items-start cursor-pointer hover:border-cyan-500/50 transition-all',
                     riskColor,
@@ -94,7 +96,7 @@ export function AIIntelligence() {
 
       {/* Right Column: Selected Anomaly Detail & Human Verification Modal */}
       <div className="w-[380px] flex flex-col gap-4 overflow-y-auto">
-        <HumanVerificationModal anomaly={selectedAnomaly} />
+        <HumanVerificationModal anomaly={selectedAnomaly} onClose={() => setSelectedAnomalyId(null)} />
 
         {/* Explainable Risk Breakdown */}
         {selectedAnomaly && (

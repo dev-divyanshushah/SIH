@@ -57,6 +57,11 @@ export function TopBar() {
           <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
           ALL SYSTEMS NOMINAL
         </div>
+        
+        {/* Simulation label */}
+        <div className="ml-4 px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-400/80 text-[9px] tracking-widest font-bold">
+          DEMO / SIMULATION
+        </div>
       </div>
 
       {/* Center: Simulation controls */}

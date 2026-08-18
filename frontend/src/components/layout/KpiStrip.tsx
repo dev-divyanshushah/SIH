@@ -36,16 +36,13 @@ function KpiCard({ icon: Icon, label, value, unit, accent = 'cyan', alert }: Kpi
 }
 
 export function KpiStrip() {
-  const { drones, anomalies, coveragePercentage, missions } = useAppStore();
+  const { drones, anomalies, coverageMetrics } = useAppStore();
 
-  const active = drones.filter(d => d.status === 'active').length;
-  const available = drones.filter(d => d.status === 'available').length;
-  const charging = drones.filter(d => d.status === 'charging').length;
+  const active = drones.filter(d => d.status === 'active' || d.status === 'patrolling' || d.status === 'investigating').length;
   const criticalEvents = anomalies.filter(a => a.risk_level === 'critical' && a.status === 'detected').length;
   const avgBattery = drones.length > 0
     ? drones.reduce((s, d) => s + d.battery_percentage, 0) / drones.length
     : 0;
-  const activeMissions = missions.filter(m => m.status === 'active').length;
   const avgEndurance = drones.filter(d => d.status === 'active').length > 0
     ? drones.filter(d => d.status === 'active').reduce((s, d) => s + d.estimated_flight_time, 0) /
       drones.filter(d => d.status === 'active').length
@@ -54,13 +51,13 @@ export function KpiStrip() {
   return (
     <div className="grid grid-cols-8 gap-2 px-4 py-2 border-b border-slate-800/60 bg-[#080c14]">
       <KpiCard icon={Cpu} label="Active Drones" value={active} accent="cyan" />
-      <KpiCard icon={Radio} label="Available" value={available} accent="green" />
-      <KpiCard icon={Zap} label="Charging" value={charging} accent="blue" />
-      <KpiCard icon={Shield} label="Coverage" value={coveragePercentage.toFixed(1)} unit="%" accent="green" />
+      <KpiCard icon={Shield} label="Overall Coverage" value={coverageMetrics?.overall.toFixed(1) || '0.0'} unit="%" accent="green" />
+      <KpiCard icon={Shield} label="Redundant Cov" value={coverageMetrics?.redundant.toFixed(1) || '0.0'} unit="%" accent="blue" />
+      <KpiCard icon={Shield} label="Single Cov" value={coverageMetrics?.single.toFixed(1) || '0.0'} unit="%" accent="amber" />
+      <KpiCard icon={Activity} label="Critical Gaps" value={coverageMetrics?.gaps || 0} accent={coverageMetrics?.gaps ? 'red' : 'green'} alert={coverageMetrics?.gaps ? true : false} />
       <KpiCard icon={Activity} label="Critical Events" value={criticalEvents} accent={criticalEvents > 0 ? 'red' : 'cyan'} alert={criticalEvents > 0} />
       <KpiCard icon={Battery} label="Avg Battery" value={avgBattery.toFixed(0)} unit="%" accent={avgBattery > 40 ? 'green' : avgBattery > 20 ? 'amber' : 'red'} />
       <KpiCard icon={Clock} label="Avg Endurance" value={avgEndurance.toFixed(0)} unit="min" accent="amber" />
-      <KpiCard icon={Target} label="Active Missions" value={activeMissions} accent="cyan" />
     </div>
   );
 }

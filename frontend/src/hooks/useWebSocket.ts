@@ -9,7 +9,7 @@ export function useWebSocket() {
   const wsRef = useRef<WebSocket | null>(null);
   const reconnectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const {
-    setDrones, setAnomalies, setEvents, setCoverage, setActiveHandover,
+    setDrones, setAnomalies, setEvents, setCoverage, setCoverageMetrics, setActiveHandover,
     setTick, setWsConnected, setLastUpdate,
   } = useAppStore();
 
@@ -32,6 +32,7 @@ export function useWebSocket() {
           if (msg.anomalies) setAnomalies(msg.anomalies);
           if (msg.events) setEvents(msg.events);
           if (msg.coverage_percentage !== undefined) setCoverage(msg.coverage_percentage);
+          if (msg.coverage_metrics !== undefined) setCoverageMetrics(msg.coverage_metrics);
           if (msg.active_handover !== undefined) setActiveHandover(msg.active_handover ?? null);
           if (msg.tick !== undefined) setTick(msg.tick);
           if (msg.timestamp) setLastUpdate(msg.timestamp);

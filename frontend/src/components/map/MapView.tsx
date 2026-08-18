@@ -125,7 +125,7 @@ export function MapView({ height = '100%', showControls = true }: MapViewProps) 
     if (!containerRef.current || mapRef.current) return;
 
     const map = L.map(containerRef.current, {
-      center: [28.6139, 77.209],
+      center: [29.5000, 73.5000],
       zoom: 13,
       zoomControl: false,
       attributionControl: false,
@@ -148,10 +148,10 @@ export function MapView({ height = '100%', showControls = true }: MapViewProps) 
 
     // Add mission boundary polygon
     const boundary = L.polygon([
-      [28.645, 77.185],
-      [28.645, 77.235],
-      [28.580, 77.235],
-      [28.580, 77.185],
+      [29.512, 73.488],
+      [29.512, 73.512],
+      [29.488, 73.512],
+      [29.488, 73.488],
     ], {
       color: '#06b6d4',
       weight: 1,
@@ -161,10 +161,43 @@ export function MapView({ height = '100%', showControls = true }: MapViewProps) 
       dashArray: '6 4',
     }).addTo(map);
 
+    // Label for the zone
+    const LabelControl = L.Control.extend({
+      onAdd: () => {
+        const div = L.DomUtil.create('div');
+        div.innerHTML = `
+          <div style="background:#ef4444dd; color:#fff; padding:6px 12px; font:700 11px 'Inter',sans-serif; letter-spacing:0.1em; border-radius:4px; border:1px solid #7f1d1d;">
+            SIMULATED BORDER SURVEILLANCE ZONE
+          </div>
+        `;
+        return div;
+      }
+    });
+    new LabelControl({ position: 'topright' }).addTo(map);
+
+    // Fit Formation Control
+    const FitControl = L.Control.extend({
+      onAdd: () => {
+        const div = L.DomUtil.create('div');
+        div.innerHTML = `
+          <button id="fit-formation-btn" style="background:#1e293b; color:#38bdf8; border:1px solid #38bdf8; padding:6px 12px; font:600 11px 'Inter',sans-serif; border-radius:4px; cursor:pointer;">
+            FIT FORMATION
+          </button>
+        `;
+        div.onclick = () => {
+          map.fitBounds([
+            [29.515, 73.485],
+            [29.485, 73.515]
+          ]);
+        };
+        return div;
+      }
+    });
+    new FitControl({ position: 'topleft' }).addTo(map);
+
     // Add base station markers
     const bases = [
-      { lat: 28.6139 + 0.002, lon: 77.209 - 0.003, label: 'BASE-A' },
-      { lat: 28.6139 - 0.002, lon: 77.209 + 0.003, label: 'BASE-B' },
+      { lat: 29.5000, lon: 73.5000, label: 'BASE-ALPHA' },
     ];
     bases.forEach(base => {
       const marker = L.marker([base.lat, base.lon], { icon: makeBaseIcon() }).addTo(map);
@@ -195,6 +228,19 @@ export function MapView({ height = '100%', showControls = true }: MapViewProps) 
                 <span style="color:#94a3b8;font-size:10px;text-transform:capitalize;">${r}</span>
               </div>
             `).join('')}
+            <div style="color:#94a3b8; font-size:9px; letter-spacing:0.1em; margin:8px 0 4px; text-transform:uppercase;">Coverage</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+              <div style="width:8px;height:8px;background:#10b981;border-radius:50%;opacity:0.2;"></div>
+              <span style="color:#94a3b8;font-size:10px;">Single Coverage</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+              <div style="width:8px;height:8px;background:#10b981;border-radius:50%;opacity:0.5;"></div>
+              <span style="color:#94a3b8;font-size:10px;">Overlapping Coverage</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+              <div style="width:8px;height:8px;background:#10b981;border-radius:50%;opacity:0.8;"></div>
+              <span style="color:#94a3b8;font-size:10px;">High Redundancy</span>
+            </div>
           </div>
         `;
         return div;
@@ -324,14 +370,14 @@ export function MapView({ height = '100%', showControls = true }: MapViewProps) 
     coverageLayersRef.current.forEach(l => map.removeLayer(l));
     coverageLayersRef.current = [];
 
-    const activeDrones = drones.filter(d => d.status === 'active');
+    const activeDrones = drones.filter(d => d.status === 'active' || d.status === 'investigating' || d.status === 'patrolling');
     activeDrones.forEach(drone => {
       const circle = L.circle([drone.latitude, drone.longitude], {
-        radius: 600,
+        radius: 1200,
         color: '#10b981',
         weight: 0,
         fillColor: '#10b981',
-        fillOpacity: 0.04,
+        fillOpacity: 0.15,
       }).addTo(map);
       coverageLayersRef.current.push(circle);
     });

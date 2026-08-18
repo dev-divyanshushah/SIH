@@ -153,6 +153,7 @@ export interface TelemetryMessage {
   anomalies?: Anomaly[];
   events?: IntelEvent[];
   coverage_percentage?: number;
+  coverage_metrics?: { overall: number; redundant: number; single: number; gaps: number; status: string };
   active_handover?: ActiveHandover | null;
   tick?: number;
   timestamp?: string;
