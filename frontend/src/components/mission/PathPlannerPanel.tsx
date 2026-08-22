@@ -12,8 +12,8 @@ export function PathPlannerPanel() {
     api.energy
       .planPath({
         drone_id: 'PA-04',
-        target_lat: 28.6139 - 0.010,
-        target_lon: 77.2090 + 0.008,
+        target_lat: 29.5000 - 0.010,
+        target_lon: 73.5000 + 0.008,
       })
       .then((res: any) => {
         setPlan(res);

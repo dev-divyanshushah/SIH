@@ -30,10 +30,7 @@ env/
 *.sqlite
 *.sqlite3
 
-# ML model files (large binaries — track with Git LFS or exclude)
-models/energy_model/model.joblib
-models/anomaly_model/model.joblib
-models/battery_model/model.joblib
+# ML model files (allowed for github)
 
 # Synthetic datasets (regenerate with scripts)
 data/synthetic/*.csv

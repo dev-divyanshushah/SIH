@@ -293,3 +293,8 @@ body {
     linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
 }
+
+/* Light theme fast-toggle hack */
+html.light-theme {
+  filter: invert(1) hue-rotate(180deg);
+}

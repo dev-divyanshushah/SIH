@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Wifi, WifiOff, Bell, Shield, User, Play, Square, RotateCcw, Zap } from 'lucide-react';
+import { Wifi, WifiOff, Bell, Shield, User, Play, Square, RotateCcw, Zap, Sun, Moon } from 'lucide-react';
 import { useAppStore } from '@/store/appStore';
 import { api } from '@/services/api';
 import { toast } from 'sonner';
@@ -13,6 +13,7 @@ const MODE_CONFIG = {
 
 export function TopBar() {
   const [time, setTime] = useState(new Date());
+  const [isLightMode, setIsLightMode] = useState(false);
   const {
     wsConnected, operationalMode, simulationRunning,
     setSimulationRunning, anomalies, events,
@@ -24,6 +25,15 @@ export function TopBar() {
     const t = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
+
+  const toggleTheme = () => {
+    if (isLightMode) {
+      document.documentElement.classList.remove('light-theme');
+    } else {
+      document.documentElement.classList.add('light-theme');
+    }
+    setIsLightMode(!isLightMode);
+  };
 
   const handleStart = async () => {
     await api.system.start();
@@ -115,6 +125,11 @@ export function TopBar() {
             <div className="text-[8px] text-slate-600 uppercase">Operator</div>
           </div>
         </div>
+
+        {/* Theme Toggle */}
+        <button onClick={toggleTheme} className="ml-2 p-1.5 rounded bg-slate-800/50 hover:bg-slate-800 text-slate-400 hover:text-cyan-400 transition-colors border border-slate-700" title="Toggle Light/Dark Mode">
+          {isLightMode ? <Moon size={14} /> : <Sun size={14} />}
+        </button>
       </div>
     </header>
   );

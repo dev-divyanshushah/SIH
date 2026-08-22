@@ -107,9 +107,10 @@ function makeBaseIcon(): L.DivIcon {
 interface MapViewProps {
   height?: string;
   showControls?: boolean;
+  cleanMode?: boolean;
 }
 
-export function MapView({ height = '100%', showControls = true }: MapViewProps) {
+export function MapView({ height = '100%', showControls = true, cleanMode = false }: MapViewProps) {
   const mapRef = useRef<L.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const droneMarkersRef = useRef<Map<string, L.Marker>>(new Map());
@@ -126,7 +127,7 @@ export function MapView({ height = '100%', showControls = true }: MapViewProps) 
 
     const map = L.map(containerRef.current, {
       center: [29.5000, 73.5000],
-      zoom: 13,
+      zoom: 12,
       zoomControl: false,
       attributionControl: false,
     });
@@ -145,6 +146,13 @@ export function MapView({ height = '100%', showControls = true }: MapViewProps) 
     map.on('click', () => setSelectedDrone(null));
 
     mapRef.current = map;
+
+    if (cleanMode) {
+      return () => {
+        map.remove();
+        mapRef.current = null;
+      };
+    }
 
     // Add mission boundary polygon
     const boundary = L.polygon([
@@ -256,6 +264,7 @@ export function MapView({ height = '100%', showControls = true }: MapViewProps) 
 
   // Update drone markers
   useEffect(() => {
+    if (cleanMode) return;
     const map = mapRef.current;
     if (!map) return;
 
@@ -330,6 +339,7 @@ export function MapView({ height = '100%', showControls = true }: MapViewProps) 
 
   // Update anomaly markers
   useEffect(() => {
+    if (cleanMode) return;
     const map = mapRef.current;
     if (!map) return;
 
@@ -365,6 +375,7 @@ export function MapView({ height = '100%', showControls = true }: MapViewProps) 
 
   // Coverage circles
   useEffect(() => {
+    if (cleanMode) return;
     const map = mapRef.current;
     if (!map) return;
     coverageLayersRef.current.forEach(l => map.removeLayer(l));

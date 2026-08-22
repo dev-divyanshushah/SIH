@@ -433,7 +433,7 @@ class SimulationEngine:
         dlat = target_lat - drone.lat
         dlon = target_lon - drone.lon
         dist = math.sqrt(dlat**2 + dlon**2)
-        step = 0.00004 * delta_t * self.speed_multiplier
+        step = 0.0002 * delta_t * self.speed_multiplier
         if dist < step:
             drone.lat = target_lat
             drone.lon = target_lon
@@ -450,7 +450,7 @@ class SimulationEngine:
         dlat = target_lat - drone.lat
         dlon = target_lon - drone.lon
         dist = math.sqrt(dlat**2 + dlon**2)
-        step = 0.00006 * delta_t * self.speed_multiplier  # slightly faster on direct mission
+        step = 0.0003 * delta_t * self.speed_multiplier  # slightly faster on direct mission
         if dist < step:
             drone.lat = target_lat
             drone.lon = target_lon
